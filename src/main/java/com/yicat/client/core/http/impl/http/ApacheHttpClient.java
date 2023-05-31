@@ -2,7 +2,6 @@ package com.yicat.client.core.http.impl.http;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.deploy.net.URLEncoder;
 import com.yicat.client.core.http.HttpClient;
 import com.yicat.client.core.http.HttpRequestConfig;
 import com.yicat.client.core.http.JsonTransformer;
@@ -29,6 +28,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;

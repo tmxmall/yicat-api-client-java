@@ -20,16 +20,16 @@ public class SubmitSegmentSample {
 
     public static void main(String[] args) {
         //创建项目
-        ApiTranslationProject apiTranslationProject = createProject("project01", "zh-Hans", Arrays.asList("en-US", "ja-JP"), "note01");
+        ApiTranslationProject apiTranslationProject = createProject(client, "project01", "zh-Hans", Arrays.asList("en-US", "ja-JP"), "note01");
         //上传文件
         File uploadFile = new File("C:\\Users\\86195\\Desktop\\sdk\\范文.docx");
         ApiUploadFileInfo apiUploadFileInfo = client.getDocumentApi().uploadFile(uploadFile).get(0);
         System.out.println("上传文件成功:" + apiUploadFileInfo);
         //添加文档到项目中
-        List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList = createDocument(apiTranslationProject, apiUploadFileInfo);
+        List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList = createDocument(client, apiTranslationProject, apiUploadFileInfo);
         System.out.println("添加文档成功:" + apiTranslationDocumentWithSettingsList);
         //分配任务
-        createTask(apiTranslationDocumentWithSettingsList);
+        createTask(client, apiTranslationDocumentWithSettingsList);
         //确认单个句段（文档维度）
         submitSegment(apiTranslationDocumentWithSettingsList);
         //删除项目

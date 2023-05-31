@@ -25,12 +25,12 @@ public class StringSegmentSample {
 
     public static void main(String[] args) {
         //创建项目
-        ApiTranslationProject apiTranslationProject = createProject("project01", "zh-Hans", Arrays.asList("en-US"), "笔记01");
+        ApiTranslationProject apiTranslationProject = createProject(client,"project01", "zh-Hans", Arrays.asList("en-US"), "笔记01");
         //上传文件
         File uploadFile = new File("C:\\Users\\86195\\Desktop\\sdk\\范文.docx");
         ApiUploadFileInfo apiUploadFileInfo = client.getDocumentApi().uploadFile(uploadFile).get(0);
         //添加文档到项目中
-        createDocument(apiTranslationProject, apiUploadFileInfo);
+        createDocument(client, apiTranslationProject, apiUploadFileInfo);
         //添加字符串类型字段
         client.getStringsSegmentApi().addI18NSegmentInfo(apiTranslationProject.getProjectId(), getAddStringSegmentRequestList());
         System.out.println("为项目添加字段:" + getAddStringSegmentRequestList());

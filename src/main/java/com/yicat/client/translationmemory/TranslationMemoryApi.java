@@ -3,7 +3,6 @@ package com.yicat.client.translationmemory;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
-import com.sun.deploy.net.URLEncoder;
 import com.yicat.client.core.YicatApi;
 import com.yicat.client.core.http.HttpRequestConfig;
 import com.yicat.client.core.http.exceptions.HttpBadRequestException;
@@ -13,6 +12,7 @@ import com.yicat.client.translationmemory.model.*;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

@@ -1,28 +1,26 @@
 package com.yicat.client.sample;
 
 import com.yicat.client.Client;
-import com.yicat.client.core.model.Credentials;
 import com.yicat.client.document.model.ApiTranslationDocumentWithSettings;
 import com.yicat.client.document.model.ApiUploadFileInfo;
 import com.yicat.client.project.model.*;
 
-import java.io.File;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import static com.yicat.client.sample.CommonMethod.createProject;
 import static com.yicat.client.sample.CommonMethod.createDocument;
+import static com.yicat.client.sample.CommonMethod.createProject;
 
 /**
  * 快速实现一个文件上传及翻译工具类
  */
 public class QuickTransSample {
-    private static Credentials credentials = new Credentials("c633e36d5c1247f493e46507d5c61994");
-    private static Client client = new Client(credentials);
-
     /**
      * 快速实现一个文件上传及翻译
      *
+     * @param client      Client对象
      * @param projectName 项目名称
      * @param srcLan      源语言方向
      * @param tgtLanList  目标语言方向
@@ -31,23 +29,20 @@ public class QuickTransSample {
      * @param tmIds       挂载记忆库id集合
      * @param tbIds       挂载术语库id集合
      */
-    public static void quickTrans(String projectName, String srcLan, List<String> tgtLanList, File file, String mtProvider, List<String> tmIds, List<String> tbIds) {
+    public static void quickTrans(Client client, String projectName, String srcLan, List<String> tgtLanList, File file, String mtProvider, List<String> tmIds, List<String> tbIds) throws InterruptedException {
         //创建项目
-        ApiTranslationProject apiTranslationProject = createProject(projectName, srcLan, tgtLanList, "笔记01");
+        ApiTranslationProject apiTranslationProject = createProject(client, projectName, srcLan, tgtLanList, "笔记01");
         //项目设置
-        int minMatchingRate = 70;
-        //项目挂载记忆库设置（tmIds不传则最低匹配率设置70，传则设置100%匹配）
+        int minMatchingRate = 100;
         ApiTranslationProjectWithSettings apiTranslationProjectWithSettings;
+        //记忆库和术语库可以根据实际情况挂载，也可以不挂载，注意语言方向要匹配
         if (tmIds != null) {
             apiTranslationProjectWithSettings = client.getProjectApi().updateProjectMountTranslationMemory(apiTranslationProject.getProjectId(), getMountTranslationMemoryList(tmIds));
             System.out.println("项目挂载记忆库设置:" + apiTranslationProjectWithSettings);
-            minMatchingRate = 100;
         }
-        //项目挂载术语库设置（tbIds不传则最低匹配率设置70，传则设置100%匹配）
         if (tbIds != null) {
             apiTranslationProjectWithSettings = client.getProjectApi().updateProjectMountTermBase(apiTranslationProject.getProjectId(), getMountTermBaseList(tbIds));
             System.out.println("项目挂载的术语库设置:" + apiTranslationProjectWithSettings);
-            minMatchingRate = 100;
         }
         //项目机器翻译引擎设置
         apiTranslationProjectWithSettings = client.getProjectApi().updateProjectMTProvider(apiTranslationProject.getProjectId(), mtProvider);
@@ -58,15 +53,33 @@ public class QuickTransSample {
         //上传文件
         ApiUploadFileInfo apiUploadFileInfo = client.getDocumentApi().uploadFile(file).get(0);
         //添加文档到项目中
-        List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList = createDocument(apiTranslationProject, apiUploadFileInfo);
+        List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList = createDocument(client, apiTranslationProject, apiUploadFileInfo);
         //循环查询文件的状态 如状态变为未开始，则下载文件
         while (true) {
-            ApiTranslationDocumentWithSettings result = client.getDocumentApi().getDocument(apiTranslationDocumentWithSettingsList.get(0).getProjectId(), apiTranslationDocumentWithSettingsList.get(0).getDocumentId());
-            if (result.getStatus() == 2) {
-                //下载文件
-                String fileId = apiTranslationDocumentWithSettingsList.get(0).getOriginalFileId();
+            ApiTranslationDocumentWithSettings result = client.getDocumentApi().
+                    getDocument(apiTranslationDocumentWithSettingsList.get(0).getProjectId(),
+                            apiTranslationDocumentWithSettingsList.get(0).getDocumentId());
+            // 状态为2或3时，表示翻译完成
+            if (result.getStatus() == 2 || result.getStatus() == 3) {
+                //导出文件，导出前需要等待数据落盘
+                Thread.sleep(1000 *3);
+                String fileId = client.getDocumentApi().exportDocuments(Arrays.asList(apiTranslationDocumentWithSettingsList.get(0).getDocumentId()),
+                        1, apiTranslationProject.getProjectId());
                 String isIe = "no";
-                client.getDocumentApi().downFile(fileId, isIe);
+                InputStream inputStream = client.getDocumentApi().downFile(fileId, isIe);
+                // 将inputStream写入文件
+                String docName = result.getDocumentName();
+                try (OutputStream outputStream = new FileOutputStream("D:\\" + docName)) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        outputStream.write(buffer, 0, bytesRead);
+                    }
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 System.out.println("下载文件成功!");
                 break;
             }

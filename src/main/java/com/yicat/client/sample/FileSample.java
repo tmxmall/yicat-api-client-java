@@ -24,12 +24,12 @@ public class FileSample {
 
     public static void main(String[] args) {
         //创建项目
-        ApiTranslationProject apiTranslationProject = createProject("project01", "zh-Hans",  Arrays.asList("en-US"), "笔记01");
+        ApiTranslationProject apiTranslationProject = createProject(client,"project01", "zh-Hans",  Arrays.asList("en-US"), "笔记01");
         //上传文件
         ApiUploadFileInfo apiUploadFileInfo = client.getDocumentApi().uploadFile(new File("C:\\Users\\86195\\Desktop\\sdk\\范文.docx")).get(0);
         System.out.println("上传文件成功：" + apiUploadFileInfo);
         //添加文档到项目中
-        List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList = createDocument(apiTranslationProject, apiUploadFileInfo);
+        List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList = createDocument(client, apiTranslationProject, apiUploadFileInfo);
         //获取文档列表
         List<ApiTranslationDocumentWithSettings> documents = client.getDocumentApi().getDocuments(apiTranslationProject.getProjectId());
         System.out.println("获取文档列表：" + documents);

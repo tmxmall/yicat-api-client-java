@@ -79,7 +79,7 @@ class TaskApiTest {
         File file = new File("C:\\Users\\86195\\Desktop\\sdk\\范文.docx");
         List<ApiUploadFileInfo> apiUploadFileInfos = client.getDocumentApi().uploadFile(file);
         ApiTranslationProject apiTranslationProject = client.getProjectApi().getProject(projectId);
-        List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList = createDocument(apiTranslationProject, apiUploadFileInfos.get(0));
+        List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList = createDocument(client, apiTranslationProject, apiUploadFileInfos.get(0));
         ApiTranslationTaskRequest request = new ApiTranslationTaskRequest();
         String documentId = apiTranslationDocumentWithSettingsList.get(0).getDocumentId();
         request.setDocumentId(documentId);

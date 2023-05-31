@@ -17,24 +17,6 @@ import com.yicat.client.project.model.ApiTranslationProject;
 import com.yicat.client.task.model.ApiTranslationTaskRequest;
 
 public class CommonMethod {
-    private static Credentials credentials = new Credentials("c633e36d5c1247f493e46507d5c61994");
-    private static Client client = new Client(credentials);
-
-    private static ApiTranslationGroupMember apiTranslationGroupMember = client.getMemberAPI().getTranslationGroupMember().get(0);
-
-    /**
-     * 单例模式创建Client对象
-     *
-     */
-    static {
-        if (client == null) {
-            synchronized (CommonMethod.class) {
-                if (client == null) {
-                    client = new Client(credentials);
-                }
-            }
-        }
-    }
 
     /**
      * 创建一个项目
@@ -44,7 +26,7 @@ public class CommonMethod {
      * @param tgtLanList
      * @return
      */
-    public static ApiTranslationProject createProject(String projectName, String srcLan, List<String> tgtLanList,
+    public static ApiTranslationProject createProject(Client client, String projectName, String srcLan, List<String> tgtLanList,
                                                       String notes) {
         AddTranslationProjectRequest addTranslationProjectRequest = new AddTranslationProjectRequest();
         addTranslationProjectRequest.setProjectName(projectName);
@@ -68,8 +50,9 @@ public class CommonMethod {
      * @param apiUploadFileInfo
      * @return
      */
-    public static List<ApiTranslationDocumentWithSettings> createDocument(ApiTranslationProject apiTranslationProject,
+    public static List<ApiTranslationDocumentWithSettings> createDocument(Client client, ApiTranslationProject apiTranslationProject,
                                                                           ApiUploadFileInfo apiUploadFileInfo) {
+        ApiTranslationGroupMember apiTranslationGroupMember = client.getMemberAPI().getTranslationGroupMember().get(0);
         List<UploadDocumentRequest> uploadDocumentRequests = new ArrayList<>();
         UploadDocumentRequest uploadDocumentRequest = new UploadDocumentRequest();
         uploadDocumentRequest.setFileId(apiUploadFileInfo.getFileId());
@@ -112,7 +95,8 @@ public class CommonMethod {
      * @param apiTranslationDocumentWithSettingsList
      * @return
      */
-    public static List<String> createTask(List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList) {
+    public static List<String> createTask(Client client, List<ApiTranslationDocumentWithSettings> apiTranslationDocumentWithSettingsList) {
+        ApiTranslationGroupMember apiTranslationGroupMember = client.getMemberAPI().getTranslationGroupMember().get(0);
         ApiTranslationTaskRequest apiTranslationTaskRequest = new ApiTranslationTaskRequest();
         apiTranslationTaskRequest.setDocumentId(apiTranslationDocumentWithSettingsList.get(0).getDocumentId());
         apiTranslationTaskRequest.setStage(1);

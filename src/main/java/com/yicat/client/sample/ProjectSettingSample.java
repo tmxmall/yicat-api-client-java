@@ -23,7 +23,7 @@ public class ProjectSettingSample {
         List<ApiWorkflowTemplate> workflowTemplates = client.getWorkflowsApi().getWorkflowTemplate();
         System.out.println("获取工作流模板列表:" + workflowTemplates);
         //创建项目
-        ApiTranslationProject apiTranslationProject = createProject("project01", "zh-Hans", Arrays.asList("en-US"), "note01");
+        ApiTranslationProject apiTranslationProject = createProject(client,"project01", "zh-Hans", Arrays.asList("en-US"), "note01");
         //根据projectId获取指定项目
         ApiTranslationProject project = client.getProjectApi().getProject(apiTranslationProject.getProjectId());
         System.out.println("根据projectId获取指定项目:" + project);
