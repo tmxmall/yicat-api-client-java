@@ -56,7 +56,7 @@ public static void main(String[] args) throws InterruptedException {
    String srcLan = "zh-CN";
    ```
 
-4. **设置目标语言列表**：根据需要翻译的语言，将目标语言列表传递给 `tgtLanList` 参数。可以指定多个目标语言，用逗号分隔。
+4. **设置目标语言列表**：根据需要翻译的语言，将目标语言列表传递给 `tgtLanList` 参数。可以指定多个目标语言。
    
     ```java
     List<String> tgtLanList = Arrays.asList("en-US");
