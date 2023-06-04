@@ -1,0 +1,71 @@
+package vip.yicat.client.task.model;
+
+import lombok.Data;
+
+import java.util.Date;
+
+@Data
+public class ApiTranslationTask {
+    private String taskId;
+    private String documentId;
+    private String documentName;
+    private String srcLan;
+    private String tgtLan;
+    private Integer stage;
+    private String stageName;
+    private Byte stageType;
+    private String projectId;
+    private String projectName;
+    private String managerUserId;
+    private String managerUserName;
+    private String groupId;
+    private String groupName;
+    private Integer groupType;
+    private Integer words;
+    private Integer wordsWithSymbols;
+    private Integer chars;
+    private Integer ckChars;
+    private Integer spaces;
+    private Integer digitals;
+    private Integer symbols;
+    private Integer numbers;
+    private Integer segments;
+    private String taskUserId;
+    private String taskUserName;
+    private String notes;
+    private String mtProvider;
+    private Double segmentRangeStart;
+    private Double segmentRangeEnd;
+    private Date deadline;
+    private Integer progress;
+    private Integer status;
+    private Integer score;
+    private Long unitPrice;
+    private Long price;
+    private Integer newOff;
+    private Integer tm5074Off;
+    private Integer tm7584Off;
+    private Integer tm8594Off;
+    private Integer tm9599Off;
+    private Integer tm100Off;
+    private Integer tm101Off;
+    private Integer tm102Off;
+    private Integer innerRepeatOff;
+    private Integer outerRepeatOff;
+    private Integer mtOff;
+    private Byte wordCountMode;
+    private Integer transWords;
+    private Integer transWordsWithSymbols;
+    private Integer transCkChars;
+    private String originalFileId;
+    private Integer originalWordsValuation;
+    private Integer originalWordsWithSymbolsValuation;
+    private Integer originalCkWordsValuation;
+    private Integer translationWordsValuation;
+    private Integer translationWordsWithSymbolsValuation;
+    private Integer translationCkWordsValuation;
+    private Integer wordsValuationCalculateStatus;
+    private Byte appointEnabled;
+    private Date createTime;
+    private Date modifyTime;
+}

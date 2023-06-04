@@ -73,7 +73,7 @@
                     <archive>
                         <manifest>
                             <!-- 启动类 -->
-                            <mainClass>com.yicat.client.QuickTranslateDemo</mainClass>
+                            <mainClass>vip.yicat.client.QuickTranslateDemo</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
