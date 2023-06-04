@@ -1,3 +1,4 @@
 ﻿.idea/.gitignore
 *.class
 .idea
+target/*
