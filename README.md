@@ -95,4 +95,4 @@ public static void main(String[] args) throws InterruptedException {
 - 在使用该示例代码之前，请确保已正确设置 API Token 和 Base URL。
 - 根据实际需要，可以根据示例代码自行调整项目名称、源语言、目标语言和文件路径等参数。
 - 如果需要挂载记忆库和术语库，请确保其语言方向与翻译需求相匹配。
-- 本工程中还有其他示例代码，您可以根据需要进行调整和使用。具体接口参数方法可以参考YiCAT Open API文档 https://www.yicat.vip/api/v1/doc/。
+- 本工程中还有其他示例代码，您可以根据需要进行调整和使用。具体接口参数方法可以参考YiCAT Open API文档 https://www.yicat.vip/api/v1/doc
