@@ -59,8 +59,9 @@ public class QuickTransSample {
             ApiTranslationDocumentWithSettings result = client.getDocumentApi().
                     getDocument(apiTranslationDocumentWithSettingsList.get(0).getProjectId(),
                             apiTranslationDocumentWithSettingsList.get(0).getDocumentId());
-            // 状态为2或3时，表示翻译完成
-            if (result.getStatus() == 2 || result.getStatus() == 3) {
+            System.out.println("文件状态:" + result.getStatus());
+            // 状态status为2表示文档状态正常，preTransStatus为0表示预翻译完成
+            if (result.getStatus() == 2 && result.getPreTransStatus() == 0) {
                 //导出文件，导出前需要等待数据落盘
                 Thread.sleep(1000 * 3);
                 String fileId = client.getDocumentApi().exportDocuments(Arrays.asList(apiTranslationDocumentWithSettingsList.get(0).getDocumentId()),
@@ -83,6 +84,7 @@ public class QuickTransSample {
                 System.out.println("下载文件成功!");
                 break;
             }
+            Thread.sleep(1000 * 3);
         }
         // 删除项目，根据实际情况决定是否删除
         client.getProjectApi().deleteProjects(Arrays.asList(apiTranslationProject.getProjectId()));
